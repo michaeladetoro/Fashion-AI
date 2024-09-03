@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Measurements App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Add this at the beginning of your existing styles */
+        body, input, button, select, textarea {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --background-color: #f7f7f7;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            background-color: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 300px; 
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        .instructions {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        .file-input-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .file-input-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 250px;
+        }
+
+        .file-input-wrapper .btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.23rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .file-input-wrapper .btn:hover {
+            background-color: #45b7aa;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-input-wrapper .btn i {
+            font-size: 2.5rem;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            display: none;
+        }
+
+        .preview-placeholder {
+            width: 100%;
+            height: 250px;
+            background-color: transparent;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            color: #999;
+            overflow: hidden;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            display: block;
+            width: auto;
+        }
+
+        .no-image-text {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .submit-btn {
+            animation: pulse 2s infinite;
+        }
+
+        .submit-btn {
+            margin-top: 2rem;
+            padding: 20px 36px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.23rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .measurements {
+            margin-top: 2rem;
+            animation: fadeIn 1s ease-out 0.5s both;
+        }
+
+        .measurements h2 {
+            color: var(--secondary-color);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .measurements ul {
+            list-style-type: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .measurements li {
+            background-color: #f0f0f0;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .measurements li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .error {
+            color: var(--primary-color);
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+
+        .height-input-container {
+            margin-bottom: 2rem;
+        }
+
+        .height-input-container label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .height-input-wrapper {
+            display: flex;
+            align-items: center;
+            background-color: #ffffff;
+            border: 2px solid var(--primary-color);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .height-input-wrapper:focus-within {
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+        }
+
+        .height-input-wrapper input {
+            flex-grow: 1;
+            border: none;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            background-color: transparent;
+            outline: none;
+        }
+
+        .height-input-wrapper input::placeholder {
+            color: #999;
+        }
+
+        .height-input-wrapper .unit {
+            padding: 0.75rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            border-top-right-radius: 28px;
+            border-bottom-right-radius: 28px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Body Measurements App</h1>
+        <p class="instructions">
+            Upload clear, full-body photos from three angles: front, side, and back.
+            Wear form-fitting clothes for accurate measurements. Stand straight with arms slightly away from your body.
+        </p>
+        <form method="post" enctype="multipart/form-data" id="uploadForm">
+            <div class="file-input-container">
+                <div class="file-input-wrapper">
+                    <button class="btn" type="button"><i class="fas fa-user"></i>Front View</button>
+                    <input type="file" name="front_view" accept="image/*" id="frontViewInput" required>
+                    <div class="preview-placeholder" id="frontViewPreview">No image selected</div>
+                </div>
+                <div class="file-input-wrapper">
+                    <button class="btn" type="button"><i class="fas fa-user-side"></i>Side View</button>
+                    <input type="file" name="side_view" accept="image/*" id="sideViewInput" required>
+                    <div class="preview-placeholder" id="sideViewPreview">No image selected</div>
+                </div>
+                <div class="file-input-wrapper">
+                    <button class="btn" type="button"><i class="fas fa-user"></i>Back View</button>
+                    <input type="file" name="back_view" accept="image/*" id="backViewInput" required>
+                    <div class="preview-placeholder" id="backViewPreview">No image selected</div>
+                </div>
+            </div>
+            <div class="height-input-container">
+                <label for="heightInput">Your Height:</label>
+                <div class="height-input-wrapper">
+                    <input type="number" name="height" id="heightInput" step="0.1" min="0" placeholder="Enter height" required>
+                    <span class="unit">inches</span>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn">Get Measurements</button>
+        </form>
+        
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+        
+        {% if measurements %}
+        <div class="measurements">
+            <h2>Your Measurements</h2>
+            <ul>
+                {% for key, value in measurements.items() %}
+                <li>
+                    <strong>{{ key|capitalize }}:</strong> {{ value|round(2) }} inches
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const viewInputs = [
+                { input: document.getElementById('frontViewInput'), preview: document.getElementById('frontViewPreview') },
+                { input: document.getElementById('sideViewInput'), preview: document.getElementById('sideViewPreview') },
+                { input: document.getElementById('backViewInput'), preview: document.getElementById('backViewPreview') }
+            ];
+
+            viewInputs.forEach(({ input, preview }) => {
+                input.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            preview.innerHTML = ''; // Clear the placeholder text
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.alt = 'Image Preview';
+                            img.classList.add('image-preview');
+                            preview.appendChild(img);
+                        }
+                        reader.readAsDataURL(file);
+                    } else {
+                        preview.innerHTML = '<div class="no-image-text">No image selected</div>';
+                    }
+                });
+            });
+
+            document.querySelectorAll('.file-input-wrapper .btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.nextElementSibling.click();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
